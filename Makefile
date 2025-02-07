@@ -6,7 +6,7 @@
 #    By: victor <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 10:39:30 by victor            #+#    #+#              #
-#    Updated: 2025/02/07 13:18:08 by vberdugo         ###   ########.fr        #
+#    Updated: 2025/02/07 13:24:37 by vberdugo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,7 @@ CC = cc
 CFLAGS = -Wall -Wextra -Werror -I inc -fsanitize=address -fsanitize=undefined -fsanitize=leak -g
 
 # Linker flags (add any required libraries here)
-LDFLAGS = -lcurses -ltermcap -lreadline -lhistory -lncurses
+LDFLAGS = -pthread
 
 # Colors for output
 GREEN_DARK = \033[0;32m    # Green
