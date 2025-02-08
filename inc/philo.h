@@ -6,52 +6,52 @@
 /*   By: vberdugo <vberdugo@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:16:41 by vberdugo          #+#    #+#             */
-/*   Updated: 2025/02/07 14:20:01 by vberdugo         ###   ########.fr       */
+/*   Updated: 2025/02/08 20:36:15 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-#include <stdio.h>      // printf
-#include <stdlib.h>     // malloc, free
-#include <string.h>     // memset
-#include <unistd.h>     // write, usleep
-#include <sys/time.h>   // gettimeofday
-#include <pthread.h>    // pthread functions
-#include <stdbool.h>
+# include <pthread.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <sys/time.h>
 
+typedef struct s_simulation	t_simulation;
 
-typedef struct s_philosopher t_philosopher;
+typedef struct s_philo
+{
+	int				id;
+	int				meals_eaten;
+	long			last_meal_time;
+	pthread_t		thread;
+	pthread_mutex_t	*left_fork;
+	pthread_mutex_t	*right_fork;
+	t_simulation	*sim;
+}	t_philo;
 
-// Estructura de la simulación
 typedef struct s_simulation
 {
-    int num_philos;
-    int time_to_die;
-    int time_to_eat;
-    int time_to_sleep;
-    int meals_required;
-    bool simulation_over;
-    long start_time;
-    t_philosopher *philosophers;
-    pthread_mutex_t *forks;
-    pthread_mutex_t print_mutex;
-    int meals_completed; // Contador de filósofos que han completado sus comidas
-} t_simulation;
+	int				num_philos;
+	int				time_to_die;
+	int				time_to_eat;
+	int				time_to_sleep;
+	int				max_meals;
+	int				finished_meals;
+	int				dead;
+	long			start_time;
+	pthread_mutex_t	*forks;
+	pthread_mutex_t	print_mutex;
+	pthread_mutex_t	check_mutex;
+	t_philo			*philo;
+}	t_simulation;
 
-typedef struct s_philosopher {
-    int             id;
-    pthread_t       thread;
-    int             meals_eaten;
-    long            last_meal;
-    pthread_mutex_t meal_mutex; // Agregar esta línea
-    struct s_simulation *sim;
-} t_philosopher;
-
-// Prototipos de funciones
-void *philosopher_routine(void *arg);
-
-
+long	get_time(void);
+void	precise_sleep(int milliseconds);
+void	print_action(t_philo *phil, char *message);
+void	take_forks(t_philo *phil);
+void	put_forks(t_philo *phil);
 
 #endif
