@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 20:13:26 by victor            #+#    #+#             */
-/*   Updated: 2025/02/09 11:12:03 by victor           ###   ########.fr       */
+/*   Updated: 2025/02/09 11:54:29 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,17 @@ void	precise_sleep(int milliseconds)
 void	print_action(t_philo *phil, char *message)
 {
 	pthread_mutex_lock(&phil->sim->print_mutex);
+	pthread_mutex_lock(&phil->sim->check_mutex);
 	if (!phil->sim->dead)
-		printf("%ld %d %s\n", get_time() - phil->sim->start_time,
-			phil->id, message);
+	{
+		pthread_mutex_unlock(&phil->sim->check_mutex);
+		printf("%ld %d %s\n", get_time() - phil->sim->start_time, phil->id,
+			message);
+	}
+	else
+	{
+		pthread_mutex_unlock(&phil->sim->check_mutex);
+	}
 	pthread_mutex_unlock(&phil->sim->print_mutex);
 }
 

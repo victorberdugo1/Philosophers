@@ -6,7 +6,7 @@
 #    By: victor <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 10:39:30 by victor            #+#    #+#              #
-#    Updated: 2025/02/09 10:56:28 by victor           ###   ########.fr        #
+#    Updated: 2025/02/09 11:29:26 by victor           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,7 @@ INCLUDE = inc/philo.h
 
 # Compiler settings
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -I inc -fsanitize=address -fsanitize=undefined -fsanitize=leak -g
+CFLAGS = -Wall -Wextra -Werror -I inc #-fsanitize=address -fsanitize=undefined -fsanitize=leak -g
 
 # Linker flags (add any required libraries here)
 LDFLAGS = -pthread
