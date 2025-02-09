@@ -6,7 +6,7 @@
 /*   By: vberdugo <vberdugo@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:16:41 by vberdugo          #+#    #+#             */
-/*   Updated: 2025/02/08 20:36:15 by victor           ###   ########.fr       */
+/*   Updated: 2025/02/09 10:56:11 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,7 @@ void	precise_sleep(int milliseconds);
 void	print_action(t_philo *phil, char *message);
 void	take_forks(t_philo *phil);
 void	put_forks(t_philo *phil);
+int		init_simulation(t_simulation *sim, int argc, char **argv);
+void	cleanup_simulation(t_simulation *sim);
 
 #endif
