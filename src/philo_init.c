@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 10:54:56 by victor            #+#    #+#             */
-/*   Updated: 2025/02/09 11:49:49 by victor           ###   ########.fr       */
+/*   Updated: 2025/02/12 16:46:50 by vberdugo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	init_philosophers(t_simulation *sim)
 /* - Validates command-line arguments.                                        */
 /* - Sets simulation timing and meal parameters.                              */
 /* - Allocates memory for forks and philosopher struct, then initializes them.*/
-/* ************************************************************************** */
+/* ************************************************************************** *
 int	init_simulation(t_simulation *sim, int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
@@ -84,7 +84,34 @@ int	init_simulation(t_simulation *sim, int argc, char **argv)
 		return (1);
 	init_philosophers(sim);
 	return (0);
+}*/
+int init_simulation(t_simulation *sim, int argc, char **argv)
+{
+	if (argc < 5 || argc > 6)
+		return (printf("./philo num time_die time_eat time_sleep [max_meals]\n"), 1);
+	sim->num_philos = atoi(argv[1]);
+	sim->time_to_die = atoi(argv[2]);
+	sim->time_to_eat = atoi(argv[3]);
+	sim->time_to_sleep = atoi(argv[4]);
+	if (argc == 6)
+		sim->max_meals = atoi(argv[5]);
+	else
+		sim->max_meals = -1;
+	sim->finished_meals = 0;
+	sim->dead = 0;
+	sim->start_time = get_time();
+	sim->forks = malloc(sizeof(pthread_mutex_t) * sim->num_philos);
+	sim->philo = malloc(sizeof(t_philo) * sim->num_philos);
+	if (!sim->forks || !sim->philo)
+		return (printf("Memory allocation failed\n"), 1);
+	if (init_mutexes_and_forks(sim))
+		return (1);
+	init_philosophers(sim);
+	sim->available_seats = sim->num_philos - 1;
+	pthread_mutex_init(&sim->seat_mutex, NULL);
+	return (0);
 }
+
 
 /* ************************************************************************** */
 /* Cleans up and frees resources allocated for the simulation.                */

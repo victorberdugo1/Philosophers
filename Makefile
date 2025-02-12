@@ -6,14 +6,14 @@
 #    By: victor <marvin@42.fr>                      +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/11/12 10:39:30 by victor            #+#    #+#              #
-#    Updated: 2025/02/09 11:29:26 by victor           ###   ########.fr        #
+#    Updated: 2025/02/12 17:24:39 by vberdugo         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 
 # List all your source files here
-SRCS = src/philo.c src/philo_utils.c src/philo_init.c
+SRCS = src/philo.c src/philo_utils.c src/philo_init.c src/ft_printf.c
 
 # Set the object directory
 OBJ_DIR = ./obj

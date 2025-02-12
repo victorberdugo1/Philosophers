@@ -6,7 +6,7 @@
 /*   By: vberdugo <vberdugo@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:16:41 by vberdugo          #+#    #+#             */
-/*   Updated: 2025/02/09 11:49:12 by victor           ###   ########.fr       */
+/*   Updated: 2025/02/12 17:22:51 by vberdugo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,8 @@ typedef struct s_simulation
 	int				finished_meals;
 	int				dead;
 	long			start_time;
+	int				available_seats;
+	pthread_mutex_t	seat_mutex;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	check_mutex;
@@ -55,5 +57,6 @@ void	take_forks(t_philo *phil);
 void	put_forks(t_philo *phil);
 int		init_simulation(t_simulation *sim, int argc, char **argv);
 void	cleanup_simulation(t_simulation *sim);
+int		ft_printf(const char *format, ...);
 
 #endif
