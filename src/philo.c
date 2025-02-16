@@ -6,7 +6,7 @@
 /*   By: vberdugo <vberdugo@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:10:27 by vberdugo          #+#    #+#             */
-/*   Updated: 2025/02/12 17:44:46 by vberdugo         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:25:19 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	*handle_single_philo(t_philo *phil)
 /* - Updates the last meal time and increments the meal counter.              */
 /* - Sleeps for the eating duration, then releases forks, sleeps, and thinks. */
 /* ************************************************************************** */
-static void philo_cycle(t_philo *phil)
+static void	philo_cycle(t_philo *phil)
 {
 	pthread_mutex_lock(&phil->sim->seat_mutex);
 	while (phil->sim->available_seats <= 0)
@@ -45,24 +45,19 @@ static void philo_cycle(t_philo *phil)
 	}
 	phil->sim->available_seats--;
 	pthread_mutex_unlock(&phil->sim->seat_mutex);
-
 	take_forks(phil);
 	print_action(phil, "is eating");
-
 	pthread_mutex_lock(&phil->sim->check_mutex);
 	phil->last_meal_time = get_time();
 	phil->meals_eaten++;
 	if (phil->sim->max_meals > 0 && phil->meals_eaten >= phil->sim->max_meals)
 		phil->sim->finished_meals++;
 	pthread_mutex_unlock(&phil->sim->check_mutex);
-
 	precise_sleep(phil->sim->time_to_eat);
 	put_forks(phil);
-
 	pthread_mutex_lock(&phil->sim->seat_mutex);
 	phil->sim->available_seats++;
 	pthread_mutex_unlock(&phil->sim->seat_mutex);
-
 	print_action(phil, "is sleeping");
 	precise_sleep(phil->sim->time_to_sleep);
 	print_action(phil, "is thinking");
@@ -86,7 +81,8 @@ void	*philo_routine(void *arg)
 	while (1)
 	{
 		pthread_mutex_lock(&phil->sim->check_mutex);
-		if (phil->sim->dead || (phil->sim->max_meals > 0 && phil->meals_eaten >= phil->sim->max_meals))
+		if (phil->sim->dead || (phil->sim->max_meals > 0
+				&& phil->meals_eaten >= phil->sim->max_meals))
 		{
 			pthread_mutex_unlock(&phil->sim->check_mutex);
 			break ;
@@ -97,17 +93,16 @@ void	*philo_routine(void *arg)
 	return (NULL);
 }
 
-
 /* ************************************************************************** */
 /* Monitors simulation conditions to detect termination.                      */
 /* - Checks if all philosophers have eaten the required number of meals.      */
 /* - Iterates through each philosopher to detect if any have starved.         */
 /* - Sets the simulation dead flag and prints messages when termination.      */
 /* ************************************************************************** */
-void *monitor_routine(void *arg)
+void	*monitor_routine(void *arg)
 {
-	t_simulation *sim;
-	int i;
+	t_simulation	*sim;
+	int				i;
 
 	sim = (t_simulation *)arg;
 	while (1)
@@ -116,27 +111,18 @@ void *monitor_routine(void *arg)
 		if (sim->max_meals > 0 && sim->finished_meals == sim->num_philos)
 		{
 			sim->dead = 1;
-			pthread_mutex_lock(&sim->print_mutex);
 			ft_printf("%d All philos fed.\n", get_time() - sim->start_time);
-			pthread_mutex_unlock(&sim->print_mutex);
 			pthread_mutex_unlock(&sim->check_mutex);
-			break;
+			break ;
 		}
 		i = -1;
 		while (++i < sim->num_philos)
-		{
 			if (get_time() - sim->philo[i].last_meal_time > sim->time_to_die)
-			{
-				sim->dead = 1;
-				pthread_mutex_lock(&sim->print_mutex);
-				ft_printf("%d %d died\n", get_time() - sim->start_time, sim->philo[i].id);
-				pthread_mutex_unlock(&sim->print_mutex);
-				pthread_mutex_unlock(&sim->check_mutex);
-				return (NULL);
-			}
-		}
+				return (sim->dead = 1, ft_printf("%d %d died\n", get_time()
+						- sim->start_time, sim->philo[i].id)
+					, pthread_mutex_unlock(&sim->check_mutex), NULL);
 		pthread_mutex_unlock(&sim->check_mutex);
-		usleep(1000);
+		usleep(500);
 	}
 	return (NULL);
 }
@@ -157,8 +143,8 @@ int	main(int argc, char **argv)
 		return (1);
 	i = -1;
 	while (++i < sim.num_philos)
-		pthread_create(&sim.philo[i].thread, NULL,
-			philo_routine, &sim.philo[i]);
+		pthread_create(&sim.philo[i].thread, NULL, philo_routine,
+			&sim.philo[i]);
 	pthread_create(&monitor, NULL, monitor_routine, &sim);
 	i = -1;
 	while (++i < sim.num_philos)

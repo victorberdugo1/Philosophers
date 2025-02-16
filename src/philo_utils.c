@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 20:13:26 by victor            #+#    #+#             */
-/*   Updated: 2025/02/12 17:31:14 by vberdugo         ###   ########.fr       */
+/*   Updated: 2025/02/16 11:30:14 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ void	precise_sleep(int milliseconds)
 
 	start = get_time();
 	while ((get_time() - start) < milliseconds)
-		usleep(500);
+		usleep(100);
 }
 
 /* ************************************************************************** */
@@ -47,13 +47,11 @@ void	print_action(t_philo *phil, char *message)
 	pthread_mutex_lock(&phil->sim->check_mutex);
 	if (!phil->sim->dead)
 	{
-		pthread_mutex_lock(&phil->sim->print_mutex);
-		ft_printf("%d %d %s\n", get_time() - phil->sim->start_time, phil->id, message);
-		pthread_mutex_unlock(&phil->sim->print_mutex);
+		ft_printf("%d %d %s\n", get_time() - phil->sim->start_time,
+			phil->id, message);
 	}
 	pthread_mutex_unlock(&phil->sim->check_mutex);
 }
-
 
 /* ************************************************************************** */
 /* Handles the action of taking forks by a philosopher.                     */

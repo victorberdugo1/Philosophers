@@ -6,7 +6,7 @@
 /*   By: vberdugo <vberdugo@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 17:21:35 by vberdugo          #+#    #+#             */
-/*   Updated: 2025/02/12 17:22:27 by vberdugo         ###   ########.fr       */
+/*   Updated: 2025/02/16 10:50:54 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static void	ft_putnbr(int n)
 	if (n == -2147483648)
 	{
 		ft_putstr("-2147483648");
-		return;
+		return ;
 	}
 	if (n < 0)
 	{
@@ -43,8 +43,9 @@ static void	ft_putnbr(int n)
 int	ft_printf(const char *format, ...)
 {
 	va_list	args;
-	int		i = 0;
+	int		i;
 
+	i = 0;
 	va_start(args, format);
 	while (format[i])
 	{

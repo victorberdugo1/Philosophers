@@ -6,7 +6,7 @@
 /*   By: vberdugo <vberdugo@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:16:41 by vberdugo          #+#    #+#             */
-/*   Updated: 2025/02/12 17:22:51 by vberdugo         ###   ########.fr       */
+/*   Updated: 2025/02/16 10:21:19 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <sys/time.h>
+# include <stdarg.h>
 
 typedef struct s_simulation	t_simulation;
 
@@ -45,7 +46,6 @@ typedef struct s_simulation
 	int				available_seats;
 	pthread_mutex_t	seat_mutex;
 	pthread_mutex_t	*forks;
-	pthread_mutex_t	print_mutex;
 	pthread_mutex_t	check_mutex;
 	t_philo			*philo;
 }	t_simulation;
