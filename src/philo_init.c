@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 10:54:56 by victor            #+#    #+#             */
-/*   Updated: 2025/02/16 11:29:19 by victor           ###   ########.fr       */
+/*   Updated: 2025/02/18 12:34:43 by vberdugo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,19 @@ int	init_simulation(t_simulation *sim, int argc, char **argv)
 	if (argc < 5 || argc > 6)
 		return (printf(
 				"./philo num time_die time_eat time_sleep [max_meals]\n"), 1);
-	sim->num_philos = atoi(argv[1]);
-	sim->time_to_die = atoi(argv[2]);
-	sim->time_to_eat = atoi(argv[3]);
-	sim->time_to_sleep = atoi(argv[4]);
+	sim->num_philos = ft_atoi(argv[1]);
+	sim->time_to_die = ft_atoi(argv[2]);
+	sim->time_to_eat = ft_atoi(argv[3]);
+	sim->time_to_sleep = ft_atoi(argv[4]);
+	if (sim->num_philos <= 0 || sim->time_to_die <= 0 || sim->time_to_eat <= 0
+		|| sim->time_to_sleep <= 0)
+		return (printf("Args must be positive numbers greater than 0\n"), 1);
 	if (argc == 6)
-		sim->max_meals = atoi(argv[5]);
+	{
+		sim->max_meals = ft_atoi(argv[5]);
+		if (sim->max_meals == 0 || sim->max_meals < -1)
+			return (printf("max_meals must be greater than 0\n"), 1);
+	}
 	else
 		sim->max_meals = -1;
 	sim->finished_meals = 0;

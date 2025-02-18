@@ -6,7 +6,7 @@
 /*   By: vberdugo <vberdugo@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:16:41 by vberdugo          #+#    #+#             */
-/*   Updated: 2025/02/16 10:21:19 by victor           ###   ########.fr       */
+/*   Updated: 2025/02/18 12:08:07 by vberdugo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,6 @@ void	put_forks(t_philo *phil);
 int		init_simulation(t_simulation *sim, int argc, char **argv);
 void	cleanup_simulation(t_simulation *sim);
 int		ft_printf(const char *format, ...);
+int		ft_atoi(const char *nptr);
 
 #endif
