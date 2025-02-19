@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/09 10:54:56 by victor            #+#    #+#             */
-/*   Updated: 2025/02/18 12:34:43 by vberdugo         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:25:39 by victor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ static void	init_philosophers(t_simulation *sim)
 /* - Sets simulation timing and meal parameters.                              */
 /* - Allocates memory for forks and philosopher struct, then initializes them.*/
 /* ************************************************************************** */
-int	init_simulation(t_simulation *sim, int argc, char **argv)
+static int	validate_args(t_simulation *sim, int argc, char **argv)
 {
 	if (argc < 5 || argc > 6)
 		return (printf(
@@ -68,24 +68,40 @@ int	init_simulation(t_simulation *sim, int argc, char **argv)
 	sim->time_to_die = ft_atoi(argv[2]);
 	sim->time_to_eat = ft_atoi(argv[3]);
 	sim->time_to_sleep = ft_atoi(argv[4]);
-	if (sim->num_philos <= 0 || sim->time_to_die <= 0 || sim->time_to_eat <= 0
-		|| sim->time_to_sleep <= 0)
-		return (printf("Args must be positive numbers greater than 0\n"), 1);
+	if (sim->num_philos <= 0 || sim->time_to_die <= 0
+		|| sim->time_to_eat <= 0 || sim->time_to_sleep <= 0)
+	{
+		printf("Args must be positive numbers greater than 0\n");
+		return (1);
+	}
 	if (argc == 6)
 	{
 		sim->max_meals = ft_atoi(argv[5]);
-		if (sim->max_meals == 0 || sim->max_meals < -1)
-			return (printf("max_meals must be greater than 0\n"), 1);
+		if (sim->max_meals <= 0)
+		{
+			printf("max_meals must be greater than 0\n");
+			return (1);
+		}
 	}
 	else
 		sim->max_meals = -1;
+	return (0);
+}
+
+int	init_simulation(t_simulation *sim, int argc, char **argv)
+{
+	if (validate_args(sim, argc, argv))
+		return (1);
 	sim->finished_meals = 0;
 	sim->dead = 0;
 	sim->start_time = get_time();
 	sim->forks = malloc(sizeof(pthread_mutex_t) * sim->num_philos);
 	sim->philo = malloc(sizeof(t_philo) * sim->num_philos);
 	if (!sim->forks || !sim->philo)
-		return (printf("Memory allocation failed\n"), 1);
+	{
+		printf("Memory allocation failed\n");
+		return (1);
+	}
 	if (init_mutexes_and_forks(sim))
 		return (1);
 	init_philosophers(sim);
