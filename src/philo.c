@@ -6,7 +6,7 @@
 /*   By: vberdugo <vberdugo@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/07 13:10:27 by vberdugo          #+#    #+#             */
-/*   Updated: 2025/02/16 11:25:19 by victor           ###   ########.fr       */
+/*   Updated: 2025/02/20 20:06:58 by vberdugo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,6 @@ void	*handle_single_philo(t_philo *phil)
 /* ************************************************************************** */
 static void	philo_cycle(t_philo *phil)
 {
-	pthread_mutex_lock(&phil->sim->seat_mutex);
-	while (phil->sim->available_seats <= 0)
-	{
-		pthread_mutex_unlock(&phil->sim->seat_mutex);
-		usleep(100);
-		pthread_mutex_lock(&phil->sim->seat_mutex);
-	}
-	phil->sim->available_seats--;
-	pthread_mutex_unlock(&phil->sim->seat_mutex);
 	take_forks(phil);
 	print_action(phil, "is eating");
 	pthread_mutex_lock(&phil->sim->check_mutex);
@@ -55,12 +46,10 @@ static void	philo_cycle(t_philo *phil)
 	pthread_mutex_unlock(&phil->sim->check_mutex);
 	precise_sleep(phil->sim->time_to_eat);
 	put_forks(phil);
-	pthread_mutex_lock(&phil->sim->seat_mutex);
-	phil->sim->available_seats++;
-	pthread_mutex_unlock(&phil->sim->seat_mutex);
 	print_action(phil, "is sleeping");
 	precise_sleep(phil->sim->time_to_sleep);
 	print_action(phil, "is thinking");
+	precise_sleep(10);
 }
 
 /* ************************************************************************** */
@@ -76,8 +65,6 @@ void	*philo_routine(void *arg)
 	phil = (t_philo *)arg;
 	if (phil->sim->num_philos == 1)
 		return (handle_single_philo(phil), NULL);
-	if (phil->id % 2 == 0)
-		precise_sleep(1);
 	while (1)
 	{
 		pthread_mutex_lock(&phil->sim->check_mutex);

@@ -6,7 +6,7 @@
 /*   By: victor <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 20:13:26 by victor            #+#    #+#             */
-/*   Updated: 2025/02/18 13:30:14 by vberdugo         ###   ########.fr       */
+/*   Updated: 2025/02/20 19:12:37 by vberdugo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ long	get_time(void)
 }
 
 /* ************************************************************************** */
-/* Sleeps for a specified number of milliseconds with high precision.       */
+/* Sleeps for a specified number of milliseconds with high precision.         */
 /* - Continuously checks the elapsed time and uses usleep to yield control.   */
 /* ************************************************************************** */
 void	precise_sleep(int milliseconds)
@@ -33,8 +33,8 @@ void	precise_sleep(int milliseconds)
 	long	start;
 
 	start = get_time();
-	while ((get_time() - start) < milliseconds)
-		usleep(10);
+	while (get_time() < start + milliseconds)
+		usleep(5);
 }
 
 /* ************************************************************************** */
@@ -63,6 +63,7 @@ void	take_forks(t_philo *phil)
 {
 	if (phil->id % 2 == 0)
 	{
+		usleep(200);
 		pthread_mutex_lock(phil->right_fork);
 		print_action(phil, "has taken a fork");
 		pthread_mutex_lock(phil->left_fork);
